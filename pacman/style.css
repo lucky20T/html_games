@@ -1,0 +1,12 @@
+:root{--pm-bg:#000;--wall:#0a5;--pellet:#ffd;--pac:#ffd24a;--ghost1:#ff4b4b}
+body{margin:0;font-family:system-ui,Segoe UI,Roboto,Arial;background:linear-gradient(#123,#045);display:flex;align-items:center;justify-content:center;height:100vh;color:#fff}
+.wrap.pacman-wrap{max-width:720px;width:95vw}
+.pm-container{position:relative;display:flex;gap:12px;align-items:start}
+canvas{background:radial-gradient(circle at 50% 10%, #001 0%, #001 60%);border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,0.6)}
+.pm-ui{position:absolute;left:12px;top:12px;font-weight:700}
+#restart{padding:6px 10px}
+
+/* responsive */
+@media (max-width:640px){
+  canvas{width:92vw;height:auto}
+}

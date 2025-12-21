@@ -19,7 +19,12 @@ canvas{display:block;width:100%;height:auto;background:transparent;border-radius
 .play-card{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.25);text-decoration:none}
 .play-card svg{display:block}
 .play-grid{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap}
-.play-card{width:140px;height:140px;flex-direction:column;padding:8px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))}
-.play-card:hover{transform:translateY(-6px);transition:transform 160ms ease}
-.play-card-label{color:#fff;margin-top:8px;font-weight:700;text-align:center}
+.play-card{width:140px;height:140px;flex-direction:column;padding:8px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.04)}
+.play-card:hover{transform:translateY(-8px) scale(1.02);transition:transform 160ms cubic-bezier(.2,.9,.3,1);box-shadow:0 14px 36px rgba(0,0,0,0.28)}
+.play-card svg{width:84px;height:84px;display:block}
+.play-card-label{color:#fff;margin-top:8px;font-weight:700;text-align:center;font-size:14px}
+
+/* subtle caption under grid */
+.play-grid + div{color:rgba(255,255,255,0.9);margin-top:6px;text-align:center}
+
 

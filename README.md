@@ -36,3 +36,13 @@ How to run:
 
 Notes: Castling and en-passant are not implemented yet. No AI engine included — moves are two-player local.
 This chess page now includes an optional Bot opponent. Choose "Play vs Bot" from the homepage or on the chess page, pick difficulty (Easy = random moves, Medium = shallow minimax), and choose whether the bot plays White or Black.
+
+## Pac‑Man (HTML + JS)
+
+A compact Pac‑Man clone implemented with Canvas. Features:
+
+- Tile-based maze, pellets, simple ghost AI, scoring and lives.
+- Controls: Arrow keys or WASD to move.
+- Open `pacman/index.html` to play.
+
+This is a lightweight demo, intended to be dependency-free and playable by opening the HTML file in a browser.
