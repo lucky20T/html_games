@@ -19,14 +19,15 @@
   let selected = null;
   let legal = [];
   let history = [];
+  let lastMove = null;
 
   function cloneBoard(b){ return b.map(r => r.map(c => c ? {...c} : null)); }
 
   function initBoard(){
     board = Array.from({length:8}, ()=>Array(8).fill(null));
     const back = ['r','n','b','q','k','b','n','r'];
-    for(let c=0;c<8;c++){ board[0][c] = {type:back[c], color:'b'}; board[1][c] = {type:'p',color:'b'}; }
-    for(let c=0;c<8;c++){ board[6][c] = {type:'p',color:'w'}; board[7][c] = {type:back[c], color:'w'}; }
+    for(let c=0;c<8;c++){ board[0][c] = {type:back[c], color:'b', hasMoved:false}; board[1][c] = {type:'p',color:'b', hasMoved:false}; }
+    for(let c=0;c<8;c++){ board[6][c] = {type:'p',color:'w', hasMoved:false}; board[7][c] = {type:back[c], color:'w', hasMoved:false}; }
     turn = 'w'; selected = null; legal = []; history = [];
     render(); updateStatus('Ready'); updateTurn(); renderMoves();
   }
@@ -41,9 +42,15 @@
         const piece = board[r][c];
         if(piece){ sq.textContent = PIECES[piece.color][piece.type]; }
         if(selected && selected.r==r && selected.c==c) sq.classList.add('highlight');
-        // highlight legal moves
-        if(legal.find(m=>m.r==r&&m.c==c)){
+        // highlight legal moves and add move/capture indicators
+        const lm = legal.find(m=>m.r==r&&m.c==c);
+        if(lm){
           sq.classList.add('highlight');
+          if(board[r][c]) sq.classList.add('can-capture'); else sq.classList.add('can-move');
+        }
+        // last move marker
+        if(lastMove && ((lastMove.from.r==r && lastMove.from.c==c) || (lastMove.to.r==r && lastMove.to.c==c))){
+          sq.classList.add('last-move');
         }
         sq.addEventListener('click', onSquareClick);
         boardEl.appendChild(sq);
@@ -108,12 +115,50 @@
       for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
         if(dr===0 && dc===0) continue; const rr=r+dr, cc=c+dc; if(inBounds(rr,cc) && (!b[rr][cc]||b[rr][cc].color!==p.color)) moves.push({r:rr,c:cc});
       }
+      // Castling: only if king hasn't moved and not currently in check
+      const enemy = (p.color === 'w') ? 'b' : 'w';
+      if(!p.hasMoved && !isKingInCheck(p.color, b)){
+        // kingside
+        const rookK = b[r] && b[r][7];
+        if(rookK && rookK.type==='r' && rookK.color===p.color && !rookK.hasMoved){
+          let clear = true; for(let i=c+1;i<7;i++){ if(b[r][i]) { clear=false; break; } }
+          if(clear){
+            // ensure squares king passes through are not attacked
+            if(!isSquareAttacked(r, c+1, enemy, b) && !isSquareAttacked(r, c+2, enemy, b)){
+              moves.push({r:r, c:c+2, castle:'kingside'});
+            }
+          }
+        }
+        // queenside
+        const rookQ = b[r] && b[r][0];
+        if(rookQ && rookQ.type==='r' && rookQ.color===p.color && !rookQ.hasMoved){
+          let clear = true; for(let i=c-1;i>0;i--){ if(b[r][i]) { clear=false; break; } }
+          if(clear){
+            if(!isSquareAttacked(r, c-1, enemy, b) && !isSquareAttacked(r, c-2, enemy, b)){
+              moves.push({r:r, c:c-2, castle:'queenside'});
+            }
+          }
+        }
+      }
     }
 
     // Filter moves that leave king in check
     const legalFiltered = moves.filter(m=>{
       const b2 = cloneBoard(b);
+      // move king
       b2[m.r][m.c] = b2[r][c]; b2[r][c]=null;
+      // if castling, also move the rook in the simulated board
+      if(m.castle){
+        if(m.castle === 'kingside'){
+          const rookFrom = 7, rookTo = m.c - 1;
+          b2[r][rookTo] = b2[r][rookFrom]; b2[r][rookFrom] = null;
+          if(b2[r][rookTo]) b2[r][rookTo].hasMoved = true;
+        } else if(m.castle === 'queenside'){
+          const rookFrom = 0, rookTo = m.c + 1;
+          b2[r][rookTo] = b2[r][rookFrom]; b2[r][rookFrom] = null;
+          if(b2[r][rookTo]) b2[r][rookTo].hasMoved = true;
+        }
+      }
       if(b2[m.r][m.c] && b2[m.r][m.c].type==='p' && (m.r===0 || m.r===7)) b2[m.r][m.c].type='q';
       return !isKingInCheck((p.color), b2);
     });
@@ -164,13 +209,36 @@
   function makeMove(from, to){
     const piece = board[from.r][from.c];
     if(!piece) return;
+    // detect castling (king moves two files)
+    const isCastling = piece.type === 'k' && Math.abs(to.c - from.c) === 2;
     // perform move
     const target = board[to.r][to.c];
     board[to.r][to.c] = piece; board[from.r][from.c] = null;
+    // handle rook move for castling
+    if(isCastling){
+      const row = from.r;
+      if(to.c > from.c){
+        // kingside: rook from col 7 to to.c - 1
+        const rookFrom = 7, rookTo = to.c - 1;
+        board[row][rookTo] = board[row][rookFrom]; board[row][rookFrom] = null;
+        if(board[row][rookTo]) board[row][rookTo].hasMoved = true;
+      } else {
+        // queenside: rook from col 0 to to.c + 1
+        const rookFrom = 0, rookTo = to.c + 1;
+        board[row][rookTo] = board[row][rookFrom]; board[row][rookFrom] = null;
+        if(board[row][rookTo]) board[row][rookTo].hasMoved = true;
+      }
+    }
     // promotion
     if(piece.type==='p' && (to.r===0 || to.r===7)) board[to.r][to.c].type='q';
+    // mark moved
+    piece.hasMoved = true;
+    // record last move coords for UI
+    lastMove = { from:{r:from.r,c:from.c}, to:{r:to.r,c:to.c} };
     // record history simple SAN-like
-    const moveText = `${piece.color==='w'? '': '...'}${piece.type.toUpperCase()} ${String.fromCharCode(97+from.c)}${8-from.r}-${String.fromCharCode(97+to.c)}${8-to.r}`;
+    let moveText;
+    if(isCastling){ moveText = (to.c > from.c) ? 'O-O' : 'O-O-O'; if(piece.color!=='w') moveText = '...' + moveText; }
+    else moveText = `${piece.color==='w'? '': '...'}${piece.type.toUpperCase()} ${String.fromCharCode(97+from.c)}${8-from.r}-${String.fromCharCode(97+to.c)}${8-to.r}`;
     history.push(moveText); renderMoves();
     selected = null; legal = [];
     // swap turn

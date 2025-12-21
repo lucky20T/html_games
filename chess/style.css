@@ -1,13 +1,30 @@
-.chess-board{display:grid;grid-template-columns:repeat(8,64px);grid-template-rows:repeat(8,64px);gap:0;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,0.25);overflow:hidden}
-.chess-square{width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:34px;cursor:pointer;user-select:none}
+.chess-board{display:grid;grid-template-columns:repeat(8,1fr);gap:0;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,0.25);overflow:hidden;width:100%;max-width:640px}
+.chess-square{aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:clamp(18px,4.2vw,34px);cursor:pointer;user-select:none;position:relative;transition:transform 120ms ease, box-shadow 120ms ease}
 .chess-square.light{background:#f0d9b5}
 .chess-square.dark{background:#b58863}
-.chess-square.highlight{outline:3px solid rgba(50,200,150,0.55)}
-.chess-square.last-move{box-shadow:inset 0 0 0 3px rgba(255,255,0,0.18)}
+.chess-square:hover{transform:translateY(-4px);box-shadow:0 8px 18px rgba(0,0,0,0.12)}
+.chess-square.highlight{outline:3px solid rgba(50,200,150,0.65);outline-offset:-3px}
+.chess-square.last-move::before{content:'';position:absolute;inset:0;box-shadow:inset 0 0 0 4px rgba(255,235,120,0.12);pointer-events:none}
 .chess-square.capture{background:#d17b7b}
-.chess-square.coord{font-size:10px;position:absolute;bottom:2px;right:4px;color:rgba(0,0,0,0.35)}
+.chess-square .coord{font-size:10px;position:absolute;bottom:4px;right:6px;color:rgba(0,0,0,0.35)}
 
-@media (max-width:700px){
-  .chess-board{grid-template-columns:repeat(8,40px);grid-template-rows:repeat(8,40px)}
-  .chess-square{font-size:20px;width:40px;height:40px}
+/* move indicator dot for empty target squares */
+.chess-square.can-move::after{content:'';position:absolute;width:12px;height:12px;border-radius:50%;background:rgba(50,200,150,0.95);bottom:12px;pointer-events:none}
+/* capture indicator for squares with enemy pieces */
+.chess-square.can-capture{box-shadow:inset 0 0 0 4px rgba(209,123,123,0.18)}
+
+@media (max-width:520px){
+  .chess-board{max-width:92vw}
+  .chess-square{font-size:clamp(14px,5vw,22px)}
+}
+
+/* Layout: keep board readable and prevent clipping with side panel */
+.chess-layout{display:flex;gap:20px;align-items:flex-start;flex-wrap:nowrap}
+.chess-layout .chess-board{flex:1 1 auto;width:100%;max-width:640px}
+.chess-layout aside{flex:0 0 220px}
+
+@media (max-width:820px){
+  .chess-layout{flex-direction:column}
+  .chess-layout .chess-board{max-width:92vw}
+  .chess-layout aside{flex:unset;min-width:0}
 }
