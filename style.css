@@ -1,0 +1,25 @@
+:root{
+  --bg:#70c5ce;
+  --ground:#d6a95b;
+  --pipe:#4bbf6b;
+  --accent:#fff;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+body{display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--bg),#8ed1d9);}
+.wrap{position:relative;max-width:420px;width:95vw}
+canvas{display:block;width:100%;height:auto;background:transparent;border-radius:8px;box-shadow:0 8px 30px rgba(0,0,0,0.2)}
+#overlay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--accent);font-weight:700;background:rgba(0,0,0,0.25);padding:8px 12px;border-radius:6px}
+#score{position:absolute;left:12px;top:12px;color:var(--accent);font-weight:700;text-shadow:0 2px 6px rgba(0,0,0,0.35)}
+
+@media (max-width:420px){#overlay{font-size:14px}}
+
+/* Homepage specific */
+.home{padding:18px}
+.play-card{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,0.25);text-decoration:none}
+.play-card svg{display:block}
+.play-grid{display:flex;gap:18px;align-items:center;justify-content:center;flex-wrap:wrap}
+.play-card{width:140px;height:140px;flex-direction:column;padding:8px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))}
+.play-card:hover{transform:translateY(-6px);transition:transform 160ms ease}
+.play-card-label{color:#fff;margin-top:8px;font-weight:700;text-align:center}
+

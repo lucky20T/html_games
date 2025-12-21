@@ -1,0 +1,13 @@
+.chess-board{display:grid;grid-template-columns:repeat(8,64px);grid-template-rows:repeat(8,64px);gap:0;border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,0.25);overflow:hidden}
+.chess-square{width:64px;height:64px;display:flex;align-items:center;justify-content:center;font-size:34px;cursor:pointer;user-select:none}
+.chess-square.light{background:#f0d9b5}
+.chess-square.dark{background:#b58863}
+.chess-square.highlight{outline:3px solid rgba(50,200,150,0.55)}
+.chess-square.last-move{box-shadow:inset 0 0 0 3px rgba(255,255,0,0.18)}
+.chess-square.capture{background:#d17b7b}
+.chess-square.coord{font-size:10px;position:absolute;bottom:2px;right:4px;color:rgba(0,0,0,0.35)}
+
+@media (max-width:700px){
+  .chess-board{grid-template-columns:repeat(8,40px);grid-template-rows:repeat(8,40px)}
+  .chess-square{font-size:20px;width:40px;height:40px}
+}

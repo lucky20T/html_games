@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chess — HTML Games</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap" style="max-width:760px">
+      <header style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;color:#fff">
+        <div>
+          <a href="../index.html" style="color:inherit;text-decoration:none">← Home</a>
+        </div>
+        <div style="font-weight:700">Chess</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <label style="color:#fff;font-size:13px">Mode:
+            <select id="mode" style="margin-left:6px">
+              <option value="human">Two Players</option>
+              <option value="bot">Play vs Bot</option>
+            </select>
+          </label>
+          <label style="color:#fff;font-size:13px">Level:
+            <select id="difficulty" style="margin-left:6px">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+            </select>
+          </label>
+          <label style="color:#fff;font-size:13px">Bot:
+            <select id="botColor" style="margin-left:6px">
+              <option value="b">Plays Black</option>
+              <option value="w">Plays White</option>
+            </select>
+          </label>
+          <div><button id="restart">Restart</button></div>
+        </div>
+      </header>
+
+      <section style="display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap">
+        <div id="board" class="chess-board" aria-label="Chess board"></div>
+
+        <aside style="min-width:200px;color:#fff">
+          <div style="margin-bottom:10px"><strong>Turn:</strong> <span id="turn">White</span></div>
+          <div style="margin-bottom:10px"><strong>Status:</strong> <span id="status">Ready</span></div>
+          <div style="margin-bottom:8px"><strong>Move List</strong></div>
+          <ol id="moves" style="padding-left:18px;color:#fff;max-height:380px;overflow:auto"></ol>
+        </aside>
+      </section>
+    </main>
+    <script src="chess.js"></script>
+  </body>
+</html>

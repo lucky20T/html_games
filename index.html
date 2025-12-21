@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>HTML Games — Home</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="wrap home">
+      <header style="text-align:center;margin:18px 0;">
+        <h1 style="margin:0;font-size:20px;color:#fff">HTML Games</h1>
+        <p style="margin:6px 0 0 0;color:rgba(255,255,255,0.9)">A tiny collection of browser games — demo project</p>
+      </header>
+
+      <section class="play-grid" style="padding:20px 12px">
+        <a class="play-card" href="play.html" title="Play Flappy Bird">
+          <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <rect width="120" height="120" rx="12" fill="#ffd24a" />
+            <circle cx="50" cy="60" r="18" fill="#ffe07a" />
+            <circle cx="58" cy="55" r="3" fill="#000" />
+            <rect x="70" y="48" width="26" height="8" rx="4" fill="#4bbf6b" />
+          </svg>
+          <div class="play-card-label">Flappy Bird</div>
+        </a>
+
+        <a class="play-card" href="chess/index.html" title="Play Chess">
+          <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+            <rect width="120" height="120" rx="12" fill="#4bbf6b" />
+            <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="42" font-family="serif" fill="#fff">♟</text>
+          </svg>
+          <div class="play-card-label">Chess</div>
+        </a>
+
+        <div style="width:100%;text-align:center;color:#fff;max-width:420px;margin-top:8px">Click a game icon to open and play. Controls vary per game.</div>
+      </section>
+
+      <footer style="text-align:center;padding:14px;color:rgba(255,255,255,0.85)">Made with HTML, CSS & JavaScript</footer>
+    </main>
+  </body>
+</html>
